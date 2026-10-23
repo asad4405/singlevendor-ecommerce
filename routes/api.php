@@ -12,17 +12,22 @@ use Illuminate\Support\Facades\Route;
 Route::get('settings', [SettingsController::class, 'settings']);
 Route::get('contact-info', [SettingsController::class, 'contact_info']);
 Route::get('social-media', [FrontendController::class, 'socialMedia']);
+Route::get('policy-pages', [FrontendController::class, 'policyPages']);
 // banner
 Route::get('/mainslider', [FrontendController::class, 'mainSlider']);
 
 // category
 Route::get('/categories', [CategoryController::class, 'categoryList']);
 Route::get('/menu-categories', [CategoryController::class, 'menuCategories']);
-
+// brands
+Route::get('/brands', [FrontendController::class, 'brands']);
 // products
 Route::get('/front-category-products', [ProductController::class, 'frontCategoryProducts']);
 Route::get('/product-details/{slug}', [ProductController::class, 'productDetails']);
 Route::get('/related-products/{slug}', [ProductController::class, 'relatedProducts']);
+Route::get('/feature-products', [ProductController::class, 'featureproducts']);
+Route::get('/shop-products', [ProductController::class, 'shopProducts']);
+
 
 // cart
 Route::post('/add-to-cart', [CartController::class, 'addToCart']);

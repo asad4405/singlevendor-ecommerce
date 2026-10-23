@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
+use App\Models\Brand;
+use App\Models\CreatePage;
 use App\Models\SocialMedia;
 use Illuminate\Http\Request;
 
@@ -27,6 +29,26 @@ class FrontendController extends Controller
             'status' => true,
             'data' => $social_media,
             'messsage' => 'Social media data fetch successfully!'
+        ]);
+    }
+
+    public function policyPages()
+    {
+        $pages = CreatePage::where('status',1)->get();
+         return response()->json([
+            'status' => true,
+            'data' => $pages,
+            'messsage' => 'Policy data fetch successfully!'
+        ]);
+    }
+
+    public function brands()
+    {
+        $brands = Brand::where('status',1)->get();
+         return response()->json([
+            'status' => true,
+            'data' => $brands,
+            'messsage' => 'Brands data fetch successfully!'
         ]);
     }
 }

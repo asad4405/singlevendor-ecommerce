@@ -75,4 +75,30 @@ class ProductController extends Controller
             'messsage' => 'Related product data fetch successfully!'
         ]);
     }
+
+    public function featureproducts()
+    {
+        $products = Product::where('status',1)->where('feature_product', 1)
+            ->select('id','slug', 'product_name', 'product_code', 'product_image', 'product_type', 'category_id', 'subcategory_id', 'childcategory_id', 'old_price', 'new_price', 'stock', 'product_unit', 'product_video', 'short_description', 'description')
+            ->with('sliderimages')->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $products,
+            'messsage' => 'Feature products data fetch successfully!'
+        ]);
+    }
+
+    public function shopProducts()
+    {
+        $products = Product::where('status',1)->latest()
+            ->select('id','slug', 'product_name', 'product_code', 'product_image', 'product_type', 'category_id', 'subcategory_id', 'childcategory_id', 'old_price', 'new_price', 'stock', 'product_unit', 'product_video', 'short_description', 'description')
+            ->with('sliderimages')->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $products,
+            'messsage' => 'Shop products data fetch successfully!'
+        ]);
+    }
 }
