@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Childcategory;
 use App\Models\Inventory;
 use App\Models\Product;
+use App\Models\Subcategory;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -63,7 +65,7 @@ class ProductController extends Controller
     public function relatedProducts($slug)
     {
         $product = Product::where('slug', $slug)->select('id', 'category_id')->first();
-        $category_id = $product->id;
+        $category_id = $product->category_id;
         $relatedProducts = Product::where('category_id', $category_id)
             ->select('id', 'product_name', 'product_image', 'product_type', 'old_price', 'new_price')
             ->where('id', '!=', $product->id)
@@ -73,6 +75,59 @@ class ProductController extends Controller
             'status' => true,
             'data' => $relatedProducts,
             'messsage' => 'Related product data fetch successfully!'
+        ]);
+    }
+
+    public function categoryProducts($slug)
+    {
+        $category = Category::where('slug', $slug)->first();
+        $categoryProducts = Product::where('category_id', $category->id)
+            ->select('id', 'product_name', 'product_image', 'product_type', 'old_price', 'new_price')
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $categoryProducts,
+            'messsage' => 'Category product data fetch successfully!'
+        ]);
+    }
+    public function subCategoryProducts($slug)
+    {
+        $subcategory = Subcategory::where('slug', $slug)->first();
+        $subcategoryProducts = Product::where('subcategory_id', $subcategory->id)
+            ->select('id', 'product_name', 'product_image', 'product_type', 'old_price', 'new_price')
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $subcategoryProducts,
+            'messsage' => 'Subcategory product data fetch successfully!'
+        ]);
+    }
+    public function childCategoryProducts($slug)
+    {
+        $childcategory = Childcategory::where('slug', $slug)->first();
+        $childcategoryProducts = Product::where('subcategory_id', $childcategory->id)
+            ->select('id', 'product_name', 'product_image', 'product_type', 'old_price', 'new_price')
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $childcategoryProducts,
+            'messsage' => 'Childcategory product data fetch successfully!'
+        ]);
+    }
+    public function searchCategoryProducts($search)
+    {
+        $searchProducts = Product::where('product_name', 'LIKE', "%{$search}%")
+            ->orWhere('product_code', 'LIKE', "%{$search}%")
+            ->select('id', 'product_name', 'product_image', 'product_type', 'old_price', 'new_price')
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $searchProducts,
+            'messsage' => 'Search product data fetch successfully!'
         ]);
     }
 
